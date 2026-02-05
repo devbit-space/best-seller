@@ -44,7 +44,7 @@
       <div class="best-sellers-scroll-container tw-overflow-x-auto tw-pb-4" id="desktop-scroll-{{ section.id }}">
         <ul class="product-list tw-flex tw-gap-6 tw-min-w-max tw-m-0 tw-p-0" role="list" aria-label="Best Sellers Products">
           {%- for block in section.blocks -%}
-            <li class="product-item tw-w-[220px] tw-flex-shrink-0" {{ block.shopify_attributes }}>
+            <li class="product-item product-item-desktop tw-flex-shrink-0" {{ block.shopify_attributes }}>
               {% render 'best-seller-card', block: block, index: forloop.index %}
             </li>
           {%- endfor -%}

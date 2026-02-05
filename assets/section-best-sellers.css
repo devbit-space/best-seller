@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500&display=swap');
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -37,7 +39,7 @@
 }
 
 .seller-header-container {
-  max-width: 1280px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 16px;
 }
@@ -146,45 +148,61 @@
   height: 6px;
 }
 
+/* Desktop: 355px card width */
+@media (min-width: 768px) {
+  .best-sellers-section .product-item-desktop {
+    width: 355px;
+  }
+}
+
 .best-seller-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
   display: inline-flex;
   align-items: center;
-  padding: 3px 7px;
-  font-size: 8px;
-  font-weight: 600;
+  padding: 4px 10px;
   text-transform: uppercase;
   background-color: #ffffff;
   color: #1f2937;
-  border: 1.5px solid #1f2937;
+  border: 1px solid #1f2937;
   border-radius: 50px;
   line-height: 1;
   letter-spacing: 0;
 }
 
 .sale-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
   display: inline-flex;
   align-items: center;
-  padding: 3px 7px;
-  font-size: 8px;
-  font-weight: 600;
+  padding: 4px 10px;
   text-transform: uppercase;
-  background-color: #4a5e4a;
+  background-color: #2d5a2d;
   color: #ffffff;
   border-radius: 50px;
-  border: 1.5px solid #1f2937;
+  border: none;
   line-height: 1;
   letter-spacing: 0;
 }
 
 .product-title {
-  font-size: 11px;
-  font-weight: 700;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.5px;
   color: #1f2937;
   line-height: 1.3;
-  margin: 0 0 6px 0;
+  margin: 0 0 8px 0;
   text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  .product-title {
+    margin-bottom: 10px;
+  }
 }
 
 .product-title a {
@@ -199,36 +217,41 @@
 .product-rating {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-bottom: 6px;
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
 .product-rating .stars {
   display: flex;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
 }
 
 .product-rating .stars svg {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
 }
 
 .product-rating .reviews-count {
-  font-size: 11px;
-  color: #6b7280;
-  margin-left: 2px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #9ca3af;
+  margin-left: 0;
 }
 
 .product-price {
-  font-size: 14px;
-  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
   color: #1f2937;
   margin: 0;
 }
 
 .best-seller-card {
+  border-radius: 8px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
 
 .best-seller-card:hover {
@@ -238,6 +261,16 @@
 .best-seller-card .product-image-container {
   border-radius: 8px;
   overflow: hidden;
+}
+
+.best-seller-card .product-card-info {
+  padding: 20px 12px 16px 12px;
+}
+
+@media (min-width: 768px) {
+  .best-seller-card .product-card-info {
+    padding: 24px 16px 20px 16px;
+  }
 }
 
 .product-image-primary,
