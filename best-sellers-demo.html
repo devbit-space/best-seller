@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Sellers Section - Demo</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      prefix: 'tw-',
+      corePlugins: {
+        preflight: false,
+      }
+    }
+  </script>
+  
+  <style>
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #fff;
+      color: #1f2937;
+    }
+    
+    /* =========================================
+       Custom Scrollbar Styling
+       ========================================= */
+
+    /* Desktop horizontal scroll container */
+    .best-sellers-scroll-container {
+      scrollbar-width: thin;
+      scrollbar-color: #1f2937 #e5e7eb;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Webkit browsers (Chrome, Safari, Edge) */
+    .best-sellers-scroll-container::-webkit-scrollbar {
+      height: 2px;
+      transition: height 0.2s ease;
+    }
+
+    .best-sellers-scroll-container::-webkit-scrollbar:hover {
+      height: 6px;
+    }
+
+    .best-sellers-scroll-container::-webkit-scrollbar-track {
+      background: #e5e7eb;
+      border-radius: 10px;
+    }
+
+    .best-sellers-scroll-container::-webkit-scrollbar-thumb {
+      background: #1f2937;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .best-sellers-scroll-container::-webkit-scrollbar-thumb:hover {
+      background: #374151;
+    }
+
+    /* =========================================
+       Custom Progress Bar / Scrollbar Track
+       ========================================= */
+
+    .scrollbar-thumb {
+      min-width: 50px;
+      transition: height 0.2s ease, background-color 0.2s ease;
+    }
+
+    .scrollbar-track {
+      height: 2px;
+      transition: height 0.2s ease;
+    }
+
+    .scrollbar-track:hover {
+      height: 6px;
+    }
+
+    .scrollbar-track:hover .scrollbar-thumb {
+      height: 6px;
+    }
+
+    /* =========================================
+       Show More Animation (Mobile)
+       ========================================= */
+
+    .best-seller-hidden {
+      display: none;
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    .best-seller-visible {
+      display: block !important;
+      animation: slideDown 0.4s ease forwards;
+    }
+
+    @keyframes slideDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Staggered animation for each card */
+    .best-seller-visible[data-product-index="5"] { animation-delay: 0ms; }
+    .best-seller-visible[data-product-index="6"] { animation-delay: 50ms; }
+    .best-seller-visible[data-product-index="7"] { animation-delay: 100ms; }
+    .best-seller-visible[data-product-index="8"] { animation-delay: 150ms; }
+    .best-seller-visible[data-product-index="9"] { animation-delay: 200ms; }
+    .best-seller-visible[data-product-index="10"] { animation-delay: 250ms; }
+
+    /* Hide animation */
+    .best-seller-hiding {
+      animation: slideUp 0.3s ease forwards;
+    }
+
+    @keyframes slideUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+    }
+
+    /* =========================================
+       Show More Button States
+       ========================================= */
+
+    .show-more-btn {
+      transition: all 0.3s ease;
+    }
+
+    .show-more-btn:active {
+      transform: scale(0.98);
+    }
+
+    .show-more-btn.expanded {
+      background-color: #374151;
+    }
+
+    /* =========================================
+       Product Card Styles
+       ========================================= */
+
+    .best-seller-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .best-seller-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Image hover effect */
+    .product-image-primary,
+    .product-image-hover {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* =========================================
+       Responsive Adjustments
+       ========================================= */
+
+    @media (max-width: 375px) {
+      .best-seller-card .tw-text-xs {
+        font-size: 0.65rem;
+      }
+      
+      .best-seller-card .tw-text-sm {
+        font-size: 0.75rem;
+      }
+    }
+
+    /* =========================================
+       Accessibility
+       ========================================= */
+
+    @media (prefers-reduced-motion: reduce) {
+      .best-seller-hidden,
+      .best-seller-visible,
+      .best-seller-hiding,
+      .best-seller-card,
+      .product-image-primary,
+      .product-image-hover,
+      .scrollbar-thumb,
+      .show-more-btn {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="best-sellers-section tw-py-10" data-section-id="demo">
+    <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+      <!-- Header -->
+      <header class="tw-flex tw-justify-between tw-items-center tw-mb-8">
+        <h2 class="tw-text-3xl md:tw-text-4xl tw-font-bold tw-italic tw-text-gray-900">
+          Best Sellers
+        </h2>
+        <a 
+          href="#" 
+          class="tw-hidden md:tw-flex tw-items-center tw-gap-2 tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-text-gray-900 tw-transition-colors tw-group"
+          aria-label="Shop All Best Sellers"
+        >
+          Shop All Best Sellers
+          <svg class="tw-w-4 tw-h-4 tw-transition-transform tw-group-hover:tw-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      </header>
+
+      <!-- Desktop: Horizontal Scrollable Grid with Custom Scrollbar -->
+      <div class="tw-hidden md:tw-block">
+        <div class="best-sellers-scroll-container tw-overflow-x-auto tw-pb-4" id="desktop-scroll-demo">
+          <ul class="tw-flex tw-gap-6 tw-min-w-max" role="list" aria-label="Best Sellers Products">
+            <!-- Product Cards will be inserted here by JavaScript -->
+          </ul>
+        </div>
+        <!-- Progress Bar / Scrollbar Track -->
+        <div class="tw-mt-6 tw-flex tw-items-center tw-gap-4">
+          <div class="scrollbar-track tw-flex-1 tw-h-[2px] tw-bg-gray-200 tw-rounded-full tw-relative tw-overflow-hidden">
+            <div 
+              class="scrollbar-thumb tw-absolute tw-left-0 tw-top-0 tw-h-full tw-bg-gray-900 tw-rounded-full tw-transition-all tw-cursor-pointer"
+              id="scrollbar-thumb-demo"
+              style="width: 30%;"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile: Grid with Show More -->
+      <div class="md:tw-hidden">
+        <ul class="tw-grid tw-grid-cols-2 tw-gap-4" role="list" aria-label="Best Sellers Products" id="mobile-grid">
+          <!-- Product Cards will be inserted here by JavaScript -->
+        </ul>
+
+        <!-- Show More Button (Mobile Only) -->
+        <div class="tw-mt-6 tw-flex tw-justify-center">
+          <button 
+            type="button"
+            class="show-more-btn tw-w-full tw-max-w-md tw-bg-gray-900 tw-text-white tw-py-4 tw-px-8 tw-rounded-full tw-font-medium tw-text-sm tw-transition-all hover:tw-bg-gray-800 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-900 focus:tw-ring-offset-2"
+            id="show-more-demo"
+            aria-expanded="false"
+          >
+            Show More
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Product data with Unsplash images
+    const products = [
+      {
+        title: "Outside Vibes T-Shirt Sunshine",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 4,
+        bestSeller: true,
+        sale: false,
+        saleText: "",
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Hike Bottle Outside Vibes Forest Green",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: true,
+        saleText: "SAVE 15%",
+        image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Rest In Nature T-Shirt Charcoal",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: false,
+        saleText: "",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Outside Vibes Cap Forest Green",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: true,
+        saleText: "SAVE 15%",
+        image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Rest In Nature T-Shirt Charcoal",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: false,
+        saleText: "",
+        image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Outside Vibes T-Shirt Sunshine",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: false,
+        saleText: "",
+        image: "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1491553895911-0055uj6f77d?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Hike Bottle Outside Vibes",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: true,
+        saleText: "SAVE 15%",
+        image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Rest In Nature T-Shirt Charcoal",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: false,
+        saleText: "",
+        image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Outside Vibes Cap Forest Green",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: true,
+        saleText: "SAVE 15%",
+        image: "https://images.unsplash.com/photo-1503602642458-232111445657?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=600&fit=crop"
+      },
+      {
+        title: "Adventure Backpack Navy",
+        price: "$104.95",
+        reviews: "1,234 Reviews",
+        rating: 5,
+        bestSeller: true,
+        sale: false,
+        saleText: "",
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=600&fit=crop",
+        imageHover: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=600&fit=crop"
+      }
+    ];
+
+    // Generate star rating HTML
+    function generateStars(rating) {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+          stars += `<svg class="tw-w-3 tw-h-3 tw-text-gray-900 tw-fill-current" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>`;
+        } else {
+          stars += `<svg class="tw-w-3 tw-h-3 tw-text-gray-300 tw-fill-current" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>`;
+        }
+      }
+      return stars;
+    }
+
+    // Generate product card HTML
+    function generateProductCard(product, index, isMobile = false) {
+      const hiddenClass = isMobile && index > 4 ? 'best-seller-hidden tw-hidden' : '';
+      
+      return `
+        <li class="${hiddenClass}" data-product-index="${index}" ${isMobile ? '' : 'class="tw-w-[220px] tw-flex-shrink-0"'}>
+          <article class="best-seller-card tw-group tw-relative tw-bg-white tw-rounded-lg tw-overflow-hidden">
+            <!-- Product Image Container -->
+            <a href="#" class="tw-block tw-relative tw-aspect-square tw-overflow-hidden tw-bg-gray-100">
+              <!-- Badges Container -->
+              <div class="tw-absolute tw-top-3 tw-left-3 tw-right-3 tw-flex tw-justify-between tw-items-start tw-z-10">
+                ${product.bestSeller ? `
+                  <span class="tw-inline-flex tw-items-center tw-px-2 tw-py-1 tw-text-[10px] tw-font-bold tw-uppercase tw-tracking-wider tw-bg-[#2d5a27] tw-text-white tw-rounded">
+                    Best Seller
+                  </span>
+                ` : '<span></span>'}
+                
+                ${product.sale ? `
+                  <span class="tw-inline-flex tw-items-center tw-px-2 tw-py-1 tw-text-[10px] tw-font-bold tw-uppercase tw-tracking-wider tw-bg-[#2d5a27] tw-text-white tw-rounded">
+                    ${product.saleText}
+                  </span>
+                ` : ''}
+              </div>
+              
+              <!-- Primary Image -->
+              <img 
+                src="${product.image}"
+                alt="${product.title}"
+                loading="lazy"
+                class="product-image-primary tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-cover tw-transition-opacity tw-duration-300 group-hover:tw-opacity-0"
+              >
+              
+              <!-- Hover Image (Secondary) -->
+              <img 
+                src="${product.imageHover}"
+                alt="${product.title} - alternate view"
+                loading="lazy"
+                class="product-image-hover tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-cover tw-opacity-0 tw-transition-opacity tw-duration-300 group-hover:tw-opacity-100"
+              >
+            </a>
+            
+            <!-- Product Info -->
+            <div class="tw-p-3 tw-pt-4">
+              <!-- Product Title -->
+              <h3 class="tw-text-xs tw-font-bold tw-uppercase tw-tracking-wide tw-text-gray-900 tw-mb-2 tw-line-clamp-2 tw-leading-tight">
+                <a href="#" class="hover:tw-text-gray-600 tw-transition-colors">
+                  ${product.title}
+                </a>
+              </h3>
+              
+              <!-- Star Rating & Reviews -->
+              <div class="tw-flex tw-items-center tw-gap-1 tw-mb-2">
+                <div class="tw-flex tw-items-center">
+                  ${generateStars(product.rating)}
+                </div>
+                <span class="tw-text-[10px] tw-text-gray-500">${product.reviews}</span>
+              </div>
+              
+              <!-- Price -->
+              <p class="tw-text-sm tw-font-semibold tw-text-gray-900">${product.price}</p>
+            </div>
+          </article>
+        </li>
+      `;
+    }
+
+    // Render products
+    function renderProducts() {
+      // Desktop grid
+      const desktopContainer = document.querySelector('#desktop-scroll-demo ul');
+      desktopContainer.innerHTML = products.map((product, index) => 
+        `<li class="tw-w-[220px] tw-flex-shrink-0">${generateProductCard(product, index + 1, false).replace('<li', '<div').replace('</li>', '</div>')}</li>`
+      ).join('');
+
+      // Mobile grid
+      const mobileContainer = document.getElementById('mobile-grid');
+      mobileContainer.innerHTML = products.map((product, index) => 
+        generateProductCard(product, index + 1, true)
+      ).join('');
+    }
+
+    // =========================================
+    // Mobile Show More Functionality
+    // =========================================
+
+    class ShowMoreToggle {
+      constructor(sectionId) {
+        this.sectionId = sectionId;
+        this.button = document.getElementById(`show-more-${sectionId}`);
+        this.section = document.querySelector(`[data-section-id="${sectionId}"]`);
+        this.hiddenItems = [];
+        this.isExpanded = false;
+        this.originalText = 'Show More';
+
+        if (this.button) {
+          this.init();
+        }
+      }
+
+      init() {
+        this.button.addEventListener('click', () => this.toggle());
+      }
+
+      updateHiddenItems() {
+        this.hiddenItems = this.section.querySelectorAll('.best-seller-hidden, .best-seller-visible[data-product-index]');
+        // Filter to only items with index > 4
+        this.hiddenItems = Array.from(this.section.querySelectorAll('[data-product-index]')).filter(item => {
+          const index = parseInt(item.getAttribute('data-product-index'));
+          return index > 4;
+        });
+      }
+
+      toggle() {
+        this.updateHiddenItems();
+        if (this.isExpanded) {
+          this.collapse();
+        } else {
+          this.expand();
+        }
+      }
+
+      expand() {
+        this.isExpanded = true;
+        this.button.setAttribute('aria-expanded', 'true');
+        this.button.textContent = 'Show Less';
+        this.button.classList.add('expanded');
+
+        this.hiddenItems.forEach((item, index) => {
+          item.classList.remove('tw-hidden', 'best-seller-hiding', 'best-seller-hidden');
+          item.classList.add('best-seller-visible');
+          item.style.animationDelay = `${index * 50}ms`;
+        });
+
+        setTimeout(() => {
+          const buttonRect = this.button.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          
+          if (buttonRect.bottom > viewportHeight) {
+            this.button.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          }
+        }, 400);
+      }
+
+      collapse() {
+        this.isExpanded = false;
+        this.button.setAttribute('aria-expanded', 'false');
+        this.button.textContent = this.originalText;
+        this.button.classList.remove('expanded');
+
+        this.hiddenItems.forEach((item) => {
+          item.classList.remove('best-seller-visible');
+          item.classList.add('best-seller-hiding');
+        });
+
+        setTimeout(() => {
+          this.hiddenItems.forEach((item) => {
+            item.classList.add('tw-hidden', 'best-seller-hidden');
+            item.classList.remove('best-seller-hiding');
+          });
+          
+          this.section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+      }
+    }
+
+    // =========================================
+    // Desktop Scroll Progress Bar
+    // =========================================
+
+    class ScrollProgressBar {
+      constructor(sectionId) {
+        this.sectionId = sectionId;
+        this.scrollContainer = document.getElementById(`desktop-scroll-${sectionId}`);
+        this.progressThumb = document.getElementById(`scrollbar-thumb-${sectionId}`);
+        this.isDragging = false;
+        this.startX = 0;
+        this.scrollLeft = 0;
+
+        if (this.scrollContainer && this.progressThumb) {
+          this.init();
+        }
+      }
+
+      init() {
+        this.scrollContainer.addEventListener('scroll', () => this.updateProgress());
+        this.updateProgress();
+        this.initDrag();
+        window.addEventListener('resize', () => this.updateProgress());
+        this.initHoverEffect();
+      }
+
+      updateProgress() {
+        const { scrollLeft, scrollWidth, clientWidth } = this.scrollContainer;
+        const maxScroll = scrollWidth - clientWidth;
+        
+        if (maxScroll <= 0) {
+          this.progressThumb.style.width = '100%';
+          this.progressThumb.style.left = '0';
+          return;
+        }
+
+        const visibleRatio = clientWidth / scrollWidth;
+        const thumbWidth = Math.max(visibleRatio * 100, 10);
+        
+        const scrollRatio = scrollLeft / maxScroll;
+        const maxThumbPosition = 100 - thumbWidth;
+        const thumbPosition = scrollRatio * maxThumbPosition;
+
+        this.progressThumb.style.width = `${thumbWidth}%`;
+        this.progressThumb.style.left = `${thumbPosition}%`;
+      }
+
+      initDrag() {
+        const track = this.progressThumb.parentElement;
+
+        this.progressThumb.addEventListener('mousedown', (e) => this.startDrag(e));
+        document.addEventListener('mousemove', (e) => this.drag(e));
+        document.addEventListener('mouseup', () => this.stopDrag());
+
+        this.progressThumb.addEventListener('touchstart', (e) => this.startDrag(e), { passive: true });
+        document.addEventListener('touchmove', (e) => this.drag(e), { passive: true });
+        document.addEventListener('touchend', () => this.stopDrag());
+
+        track.addEventListener('click', (e) => this.jumpToPosition(e));
+      }
+
+      startDrag(e) {
+        this.isDragging = true;
+        this.progressThumb.style.cursor = 'grabbing';
+        
+        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        this.startX = clientX;
+        this.scrollLeft = this.scrollContainer.scrollLeft;
+      }
+
+      drag(e) {
+        if (!this.isDragging) return;
+
+        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const track = this.progressThumb.parentElement;
+        const trackRect = track.getBoundingClientRect();
+        const deltaX = clientX - this.startX;
+        
+        const trackWidth = trackRect.width;
+        const scrollWidth = this.scrollContainer.scrollWidth - this.scrollContainer.clientWidth;
+        const scrollAmount = (deltaX / trackWidth) * scrollWidth * 2;
+
+        this.scrollContainer.scrollLeft = this.scrollLeft + scrollAmount;
+      }
+
+      stopDrag() {
+        this.isDragging = false;
+        this.progressThumb.style.cursor = 'pointer';
+      }
+
+      jumpToPosition(e) {
+        if (e.target === this.progressThumb) return;
+
+        const track = this.progressThumb.parentElement;
+        const trackRect = track.getBoundingClientRect();
+        const clickPosition = (e.clientX - trackRect.left) / trackRect.width;
+        
+        const maxScroll = this.scrollContainer.scrollWidth - this.scrollContainer.clientWidth;
+        this.scrollContainer.scrollTo({
+          left: clickPosition * maxScroll,
+          behavior: 'smooth'
+        });
+      }
+
+      initHoverEffect() {
+        const track = this.progressThumb.parentElement;
+        
+        track.addEventListener('mouseenter', () => {
+          track.style.height = '6px';
+          this.progressThumb.style.height = '6px';
+        });
+
+        track.addEventListener('mouseleave', () => {
+          if (!this.isDragging) {
+            track.style.height = '2px';
+            this.progressThumb.style.height = '100%';
+          }
+        });
+
+        track.addEventListener('touchstart', () => {
+          track.style.height = '6px';
+          this.progressThumb.style.height = '6px';
+        }, { passive: true });
+
+        track.addEventListener('touchend', () => {
+          setTimeout(() => {
+            track.style.height = '2px';
+            this.progressThumb.style.height = '100%';
+          }, 300);
+        });
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+      new ShowMoreToggle('demo');
+      new ScrollProgressBar('demo');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+{{ 'section-best-sellers.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com" defer></script>
+<script>
+  tailwind.config = {
+    prefix: 'tw-',
+    corePlugins: {
+      preflight: false,
+    }
+  }
+</script>
+
+<section class="best-sellers-section section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
+  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+    <!-- Header -->
+    <header class="tw-flex tw-justify-between tw-items-center tw-mb-8">
+      <h2 class="tw-text-3xl md:tw-text-4xl tw-font-bold tw-italic tw-text-gray-900">
+        {{ section.settings.heading }}
+      </h2>
+      {%- if section.settings.view_all_link != blank -%}
+        <a 
+          href="{{ section.settings.view_all_link }}" 
+          class="tw-hidden md:tw-flex tw-items-center tw-gap-2 tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-text-gray-900 tw-transition-colors tw-group"
+          aria-label="{{ section.settings.view_all_text }}"
+        >
+          {{ section.settings.view_all_text }}
+          <svg class="tw-w-4 tw-h-4 tw-transition-transform tw-group-hover:tw-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      {%- endif -%}
+    </header>
+
+    <!-- Desktop: Horizontal Scrollable Grid with Custom Scrollbar -->
+    <div class="tw-hidden md:tw-block">
+      <div class="best-sellers-scroll-container tw-overflow-x-auto tw-pb-4" id="desktop-scroll-{{ section.id }}">
+        <ul class="tw-flex tw-gap-6 tw-min-w-max" role="list" aria-label="Best Sellers Products">
+          {%- for block in section.blocks -%}
+            <li class="tw-w-[220px] tw-flex-shrink-0" {{ block.shopify_attributes }}>
+              {% render 'best-seller-card', block: block, index: forloop.index %}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <!-- Progress Bar / Scrollbar Track -->
+      <div class="tw-mt-6 tw-flex tw-items-center tw-gap-4">
+        <div class="tw-flex-1 tw-h-[2px] tw-bg-gray-200 tw-rounded-full tw-relative tw-overflow-hidden">
+          <div 
+            class="scrollbar-thumb tw-absolute tw-left-0 tw-top-0 tw-h-full tw-bg-gray-900 tw-rounded-full tw-transition-all tw-cursor-pointer"
+            id="scrollbar-thumb-{{ section.id }}"
+            style="width: 30%;"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile: Grid with Show More -->
+    <div class="md:tw-hidden">
+      <ul class="tw-grid tw-grid-cols-2 tw-gap-4" role="list" aria-label="Best Sellers Products">
+        {%- for block in section.blocks -%}
+          <li 
+            class="{% if forloop.index > 4 %}best-seller-hidden tw-hidden{% endif %}" 
+            data-product-index="{{ forloop.index }}"
+            {{ block.shopify_attributes }}
+          >
+            {% render 'best-seller-card', block: block, index: forloop.index %}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <!-- Show More Button (Mobile Only) -->
+      {%- if section.blocks.size > 4 -%}
+        <div class="tw-mt-6 tw-flex tw-justify-center">
+          <button 
+            type="button"
+            class="show-more-btn tw-w-full tw-max-w-md tw-bg-gray-900 tw-text-white tw-py-4 tw-px-8 tw-rounded-full tw-font-medium tw-text-sm tw-transition-all hover:tw-bg-gray-800 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-900 focus:tw-ring-offset-2"
+            id="show-more-{{ section.id }}"
+            aria-expanded="false"
+            aria-controls="hidden-products-{{ section.id }}"
+          >
+            {{ section.settings.show_more_text }}
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'best-sellers.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Best Sellers",
+  "tag": "section",
+  "class": "section-best-sellers",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Best Sellers",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "default": "Shop All Best Sellers",
+      "label": "View All Link Text"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link URL"
+    },
+    {
+      "type": "text",
+      "id": "show_more_text",
+      "default": "Show More",
+      "label": "Show More Button Text (Mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Product Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_hover",
+          "label": "Hover Image (Secondary)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Product Title",
+          "label": "Product Title"
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "Product Link"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "default": "$104.95",
+          "label": "Price"
+        },
+        {
+          "type": "text",
+          "id": "reviews_count",
+          "default": "1,234 Reviews",
+          "label": "Reviews Count"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Star Rating"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_best_seller_badge",
+          "default": true,
+          "label": "Show Best Seller Badge"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sale_badge",
+          "default": false,
+          "label": "Show Sale Badge"
+        },
+        {
+          "type": "text",
+          "id": "sale_text",
+          "default": "SAVE 15%",
+          "label": "Sale Badge Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers",
+      "blocks": [
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Outside Vibes T-Shirt Sunshine",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 4,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Hike Bottle Outside Vibes Forest Green",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": true,
+            "sale_text": "SAVE 15%"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Rest In Nature T-Shirt Charcoal",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Outside Vibes Cap Forest Green",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": true,
+            "sale_text": "SAVE 15%"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Rest In Nature T-Shirt Charcoal",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Outside Vibes T-Shirt Sunshine",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Hike Bottle Outside Vibes",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": true,
+            "sale_text": "SAVE 15%"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Rest In Nature T-Shirt Charcoal",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Outside Vibes Cap Forest Green",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": true,
+            "sale_text": "SAVE 15%"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Adventure Backpack Navy",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

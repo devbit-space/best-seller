@@ -1,0 +1,150 @@
+{
+  "sections": {
+    "main": {
+      "type": "best-sellers",
+      "blocks": {
+        "product_1": {
+          "type": "product_card",
+          "settings": {
+            "title": "Outside Vibes T-Shirt Sunshine",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 4,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_text": ""
+          }
+        },
+        "product_2": {
+          "type": "product_card",
+          "settings": {
+            "title": "Hike Bottle Outside Vibes Forest Green",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": true,
+            "sale_text": "SAVE 15%"
+          }
+        },
+        "product_3": {
+          "type": "product_card",
+          "settings": {
+            "title": "Rest In Nature T-Shirt Charcoal",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_text": ""
+          }
+        },
+        "product_4": {
+          "type": "product_card",
+          "settings": {
+            "title": "Outside Vibes Cap Forest Green",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": true,
+            "sale_text": "SAVE 15%"
+          }
+        },
+        "product_5": {
+          "type": "product_card",
+          "settings": {
+            "title": "Rest In Nature T-Shirt Charcoal",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_text": ""
+          }
+        },
+        "product_6": {
+          "type": "product_card",
+          "settings": {
+            "title": "Outside Vibes T-Shirt Sunshine",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_text": ""
+          }
+        },
+        "product_7": {
+          "type": "product_card",
+          "settings": {
+            "title": "Hike Bottle Outside Vibes",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": true,
+            "sale_text": "SAVE 15%"
+          }
+        },
+        "product_8": {
+          "type": "product_card",
+          "settings": {
+            "title": "Rest In Nature T-Shirt Charcoal",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_text": ""
+          }
+        },
+        "product_9": {
+          "type": "product_card",
+          "settings": {
+            "title": "Outside Vibes Cap Forest Green",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": true,
+            "sale_text": "SAVE 15%"
+          }
+        },
+        "product_10": {
+          "type": "product_card",
+          "settings": {
+            "title": "Adventure Backpack Navy",
+            "price": "$104.95",
+            "reviews_count": "1,234 Reviews",
+            "rating": 5,
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4",
+        "product_5",
+        "product_6",
+        "product_7",
+        "product_8",
+        "product_9",
+        "product_10"
+      ],
+      "settings": {
+        "heading": "Best Sellers",
+        "view_all_text": "Shop All Best Sellers",
+        "view_all_link": "",
+        "show_more_text": "Show More",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": ["main"]
+}

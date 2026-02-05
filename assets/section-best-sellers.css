@@ -1,0 +1,244 @@
+/* Best Sellers Section Styles */
+
+/* =========================================
+   Custom Scrollbar Styling
+   ========================================= */
+
+/* Desktop horizontal scroll container */
+.best-sellers-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #1f2937 #e5e7eb;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.best-sellers-scroll-container::-webkit-scrollbar {
+  height: 2px;
+  transition: height 0.2s ease;
+}
+
+.best-sellers-scroll-container::-webkit-scrollbar:hover {
+  height: 6px;
+}
+
+.best-sellers-scroll-container::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+.best-sellers-scroll-container::-webkit-scrollbar-thumb {
+  background: #1f2937;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.best-sellers-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* =========================================
+   Custom Progress Bar / Scrollbar Track
+   ========================================= */
+
+.scrollbar-thumb {
+  min-width: 50px;
+  transition: height 0.2s ease, background-color 0.2s ease;
+}
+
+/* Hover state for progress bar */
+.scrollbar-thumb:hover,
+.scrollbar-track:hover .scrollbar-thumb {
+  height: 6px !important;
+}
+
+/* Parent container hover effect */
+.best-sellers-scroll-container + .tw-mt-6:hover .scrollbar-thumb {
+  height: 6px;
+}
+
+/* Increase scrollbar height on touch/hover */
+.scrollbar-track {
+  height: 2px;
+  transition: height 0.2s ease;
+}
+
+.scrollbar-track:hover {
+  height: 6px;
+}
+
+/* =========================================
+   Show More Animation (Mobile)
+   ========================================= */
+
+.best-seller-hidden {
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.best-seller-visible {
+  display: block !important;
+  animation: slideDown 0.4s ease forwards;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation for each card */
+.best-seller-visible[data-product-index="5"] {
+  animation-delay: 0ms;
+}
+.best-seller-visible[data-product-index="6"] {
+  animation-delay: 50ms;
+}
+.best-seller-visible[data-product-index="7"] {
+  animation-delay: 100ms;
+}
+.best-seller-visible[data-product-index="8"] {
+  animation-delay: 150ms;
+}
+.best-seller-visible[data-product-index="9"] {
+  animation-delay: 200ms;
+}
+.best-seller-visible[data-product-index="10"] {
+  animation-delay: 250ms;
+}
+
+/* Hide animation */
+.best-seller-hiding {
+  animation: slideUp 0.3s ease forwards;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* =========================================
+   Show More Button States
+   ========================================= */
+
+.show-more-btn {
+  transition: all 0.3s ease;
+}
+
+.show-more-btn:active {
+  transform: scale(0.98);
+}
+
+.show-more-btn.expanded {
+  background-color: #374151;
+}
+
+/* =========================================
+   Product Card Styles
+   ========================================= */
+
+.best-seller-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.best-seller-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Image hover effect */
+.product-image-primary,
+.product-image-hover {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* =========================================
+   Responsive Adjustments
+   ========================================= */
+
+/* Small mobile devices */
+@media (max-width: 375px) {
+  .best-seller-card .tw-text-xs {
+    font-size: 0.65rem;
+  }
+  
+  .best-seller-card .tw-text-sm {
+    font-size: 0.75rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .best-sellers-scroll-container ul {
+    gap: 1rem;
+  }
+  
+  .best-sellers-scroll-container li {
+    width: 180px;
+  }
+}
+
+/* =========================================
+   Accessibility
+   ========================================= */
+
+/* Focus states */
+.best-seller-card a:focus-visible {
+  outline: 2px solid #1f2937;
+  outline-offset: 2px;
+}
+
+.show-more-btn:focus-visible {
+  outline: 2px solid #1f2937;
+  outline-offset: 2px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .best-seller-hidden,
+  .best-seller-visible,
+  .best-seller-hiding,
+  .best-seller-card,
+  .product-image-primary,
+  .product-image-hover,
+  .scrollbar-thumb,
+  .show-more-btn {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* =========================================
+   Print Styles
+   ========================================= */
+
+@media print {
+  .best-sellers-scroll-container {
+    overflow: visible;
+  }
+  
+  .best-sellers-scroll-container ul {
+    flex-wrap: wrap;
+  }
+  
+  .show-more-btn {
+    display: none;
+  }
+  
+  .best-seller-hidden {
+    display: block !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
