@@ -187,13 +187,16 @@
           "label": "Reviews Count"
         },
         {
-          "type": "range",
-          "id": "rating",
-          "min": 1,
-          "max": 5,
-          "step": 1,
-          "default": 5,
-          "label": "Star Rating"
+          "type": "product",
+          "id": "product",
+          "label": "Product (optional – for metafield rating)"
+        },
+        {
+          "type": "text",
+          "id": "rating_value",
+          "default": "5.0",
+          "label": "Star Rating",
+          "info": "Decimal value from 0 to 5 (e.g. 5.0, 3.5, 4.2). If a product is set and has a rating metafield, that is used instead."
         },
         {
           "type": "checkbox",
@@ -226,7 +229,7 @@
             "title": "Outside Vibes T-Shirt Sunshine",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 4,
+            "rating_value": "3.5",
             "show_best_seller_badge": true,
             "show_sale_badge": false
           }
@@ -237,7 +240,7 @@
             "title": "Hike Bottle Outside Vibes Forest Green",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": true,
             "sale_text": "SAVE 15%"
@@ -249,7 +252,7 @@
             "title": "Rest In Nature T-Shirt Charcoal",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": false
           }
@@ -260,7 +263,7 @@
             "title": "Outside Vibes Cap Forest Green",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": true,
             "sale_text": "SAVE 15%"
@@ -272,7 +275,7 @@
             "title": "Rest In Nature T-Shirt Charcoal",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": false
           }
@@ -283,7 +286,7 @@
             "title": "Outside Vibes T-Shirt Sunshine",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": false
           }
@@ -294,7 +297,7 @@
             "title": "Hike Bottle Outside Vibes",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": true,
             "sale_text": "SAVE 15%"
@@ -306,7 +309,7 @@
             "title": "Rest In Nature T-Shirt Charcoal",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": false
           }
@@ -317,7 +320,7 @@
             "title": "Outside Vibes Cap Forest Green",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": true,
             "sale_text": "SAVE 15%"
@@ -329,7 +332,7 @@
             "title": "Adventure Backpack Navy",
             "price": "$104.95",
             "reviews_count": "1,234 Reviews",
-            "rating": 5,
+            "rating_value": "5.0",
             "show_best_seller_badge": true,
             "show_sale_badge": false
           }

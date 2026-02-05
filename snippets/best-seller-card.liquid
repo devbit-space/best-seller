@@ -12,6 +12,25 @@
   if block.settings.image_hover != blank
     assign has_hover_image = true
   endif
+
+  comment
+    Resolve rating: product metafield (reviews.rating) or block rating_value (e.g. 5.0, 3.5, 4.2)
+  endcomment
+  assign product_ref = block.settings.product
+  assign rating_from_metafield = product_ref.metafields.reviews.rating.value
+  if rating_from_metafield != blank
+    assign rating_decimal = rating_from_metafield | plus: 0
+  elsif block.settings.rating_value != blank
+    assign rating_decimal = block.settings.rating_value | plus: 0
+  else
+    assign rating_decimal = 5.0
+  endif
+  if rating_decimal > 5
+    assign rating_decimal = 5.0
+  endif
+  if rating_decimal < 0
+    assign rating_decimal = 0.0
+  endif
 -%}
 
 <article 
@@ -93,20 +112,30 @@
       </a>
     </h3>
     
-    <!-- Star Rating & Reviews -->
+    <!-- Star Rating & Reviews (flexible decimal: 5.0, 3.5, 4.2, etc.) -->
     <div class="product-rating">
-      <!-- Stars -->
-      <div class="stars" role="img" aria-label="{{ block.settings.rating }} out of 5 stars">
+      <div class="stars star-rating-flexible" role="img" aria-label="{{ rating_decimal }} out of 5 stars">
         {%- for i in (1..5) -%}
-          {%- if i <= block.settings.rating -%}
-            <svg viewBox="0 0 20 20" fill="#1f2937">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-            </svg>
+          {%- assign remainder = rating_decimal | minus: i | plus: 1 -%}
+          {%- if remainder >= 1 -%}
+            {%- assign fill_pct = 100 -%}
+          {%- elsif remainder <= 0 -%}
+            {%- assign fill_pct = 0 -%}
           {%- else -%}
-            <svg viewBox="0 0 20 20" fill="#d1d5db">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-            </svg>
+            {%- assign fill_pct = remainder | times: 100 | round -%}
           {%- endif -%}
+          <span class="star-wrap" aria-hidden="true">
+            <span class="star-bg">
+              <svg viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+            </span>
+            <span class="star-fill" style="--star-fill: {{ fill_pct }}%;">
+              <svg viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+            </span>
+          </span>
         {%- endfor -%}
       </div>
       

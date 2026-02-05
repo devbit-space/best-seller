@@ -232,6 +232,47 @@
 .product-rating .stars svg {
   width: 12px;
   height: 12px;
+  display: block;
+}
+
+/* Flexible decimal star rating (e.g. 3.5, 4.2) – partial fill */
+.product-rating .star-rating-flexible {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.product-rating .star-wrap {
+  position: relative;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.product-rating .star-wrap .star-bg,
+.product-rating .star-wrap .star-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+
+.product-rating .star-wrap .star-bg {
+  color: #d1d5db;
+}
+
+.product-rating .star-wrap .star-fill {
+  color: #1f2937;
+  width: var(--star-fill, 0%);
+  overflow: hidden;
+}
+
+.product-rating .star-wrap .star-fill svg {
+  width: 12px;
+  height: 12px;
 }
 
 .product-rating .reviews-count {
