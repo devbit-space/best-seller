@@ -21,7 +21,7 @@
 >
   <!-- Product Image Container with Border Radius -->
   <a 
-    href="{{ block.settings.product_link | default: '#' }}" 
+    {% comment %} href="{{ block.settings.product_link | default: '#' }}"  {% endcomment %}
     class="product-image-container tw-block tw-relative tw-aspect-square tw-overflow-hidden tw-rounded-lg tw-bg-gray-100"
     aria-label="View {{ block.settings.title }}"
   >

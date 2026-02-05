@@ -126,7 +126,7 @@ function generateProductCard(product, index, isMobile = false) {
   return `
     <li class="product-item ${hiddenClass} ${widthClass}" data-product-index="${index}">
       <article class="best-seller-card tw-group tw-relative tw-bg-white">
-        <a href="#" class="product-image-container tw-block tw-relative tw-aspect-square tw-overflow-hidden tw-rounded-lg tw-bg-gray-100">
+        <a class="product-image-container tw-block tw-relative tw-aspect-square tw-overflow-hidden tw-rounded-lg tw-bg-gray-100">
           <div class="tw-absolute tw-top-2 tw-left-2 tw-right-2 tw-flex tw-justify-between tw-items-start tw-z-10">
             ${product.bestSeller ? '<span class="best-seller-badge">BEST SELLER</span>' : '<span></span>'}
             ${product.sale ? `<span class="sale-badge">${product.saleText}</span>` : ''}
