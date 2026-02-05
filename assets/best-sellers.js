@@ -81,69 +81,94 @@
     constructor(sectionId) {
       this.sectionId = sectionId;
       this.scrollContainer = document.getElementById(`desktop-scroll-${sectionId}`);
-      this.progressThumb = document.getElementById(`scrollbar-thumb-${sectionId}`);
+      this.thumb = document.getElementById(`scrollbar-thumb-${sectionId}`);
       this.track = document.getElementById(`scrollbar-track-${sectionId}`);
       this.isDragging = false;
       this.startX = 0;
       this.scrollLeft = 0;
 
-      if (this.scrollContainer && this.progressThumb) {
+      if (this.scrollContainer && this.thumb && this.track) {
+        this.applyStyles();
         this.init();
       }
+    }
+
+    applyStyles() {
+      // Apply all styles via JavaScript to avoid CSS conflicts
+      this.track.style.cssText = `
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: #e5e7eb;
+        position: relative;
+        border-radius: 10px;
+        cursor: pointer;
+        overflow: visible;
+        transition: height 0.2s ease;
+      `;
+
+      this.thumb.style.cssText = `
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2px;
+        min-width: 50px;
+        background-color: #1f2937;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: height 0.2s ease;
+      `;
     }
 
     init() {
       this.scrollContainer.addEventListener('scroll', debounce(() => this.updateProgress(), 10));
       this.initDrag();
-      window.addEventListener('resize', debounce(() => this.updateProgress(), 100));
       this.initHoverEffect();
+      window.addEventListener('resize', debounce(() => this.updateProgress(), 100));
       
       this.updateProgress();
       setTimeout(() => this.updateProgress(), 100);
+      setTimeout(() => this.updateProgress(), 500);
       window.addEventListener('load', () => this.updateProgress());
     }
 
     updateProgress() {
-      const container = this.scrollContainer;
-      const scrollLeft = container.scrollLeft;
-      const scrollWidth = container.scrollWidth;
-      const clientWidth = container.clientWidth;
+      const scrollLeft = this.scrollContainer.scrollLeft;
+      const scrollWidth = this.scrollContainer.scrollWidth;
+      const clientWidth = this.scrollContainer.clientWidth;
       const maxScroll = scrollWidth - clientWidth;
-      
+
       if (maxScroll <= 0 || scrollWidth === 0) {
-        this.progressThumb.style.width = '100%';
-        this.progressThumb.style.left = '0';
+        this.thumb.style.width = '100%';
+        this.thumb.style.left = '0';
         return;
       }
 
       const thumbWidthPercent = (clientWidth / scrollWidth) * 100;
-      const thumbWidth = Math.max(thumbWidthPercent, 5);
+      const thumbWidth = Math.max(thumbWidthPercent, 10);
       const scrollPercent = maxScroll > 0 ? scrollLeft / maxScroll : 0;
       const thumbPosition = scrollPercent * (100 - thumbWidth);
 
-      this.progressThumb.style.width = `${thumbWidth}%`;
-      this.progressThumb.style.left = `${thumbPosition}%`;
+      this.thumb.style.width = `${thumbWidth}%`;
+      this.thumb.style.left = `${thumbPosition}%`;
     }
 
     initDrag() {
-      const track = this.track || this.progressThumb.parentElement;
-
-      this.progressThumb.addEventListener('mousedown', (e) => this.startDrag(e));
+      this.thumb.addEventListener('mousedown', (e) => this.startDrag(e));
       document.addEventListener('mousemove', (e) => this.drag(e));
       document.addEventListener('mouseup', () => this.stopDrag());
 
-      this.progressThumb.addEventListener('touchstart', (e) => this.startDrag(e), { passive: true });
+      this.thumb.addEventListener('touchstart', (e) => this.startDrag(e), { passive: true });
       document.addEventListener('touchmove', (e) => this.drag(e), { passive: true });
       document.addEventListener('touchend', () => this.stopDrag());
 
-      if (track) {
-        track.addEventListener('click', (e) => this.jumpToPosition(e));
-      }
+      this.track.addEventListener('click', (e) => this.jumpToPosition(e));
     }
 
     startDrag(e) {
       this.isDragging = true;
-      this.progressThumb.style.cursor = 'grabbing';
+      this.thumb.style.cursor = 'grabbing';
       const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
       this.startX = clientX;
       this.scrollLeft = this.scrollContainer.scrollLeft;
@@ -152,8 +177,7 @@
     drag(e) {
       if (!this.isDragging) return;
       const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      const track = this.track || this.progressThumb.parentElement;
-      const trackRect = track.getBoundingClientRect();
+      const trackRect = this.track.getBoundingClientRect();
       const deltaX = clientX - this.startX;
       const trackWidth = trackRect.width;
       const scrollWidth = this.scrollContainer.scrollWidth - this.scrollContainer.clientWidth;
@@ -163,13 +187,12 @@
 
     stopDrag() {
       this.isDragging = false;
-      this.progressThumb.style.cursor = 'pointer';
+      this.thumb.style.cursor = 'pointer';
     }
 
     jumpToPosition(e) {
-      if (e.target === this.progressThumb) return;
-      const track = this.track || this.progressThumb.parentElement;
-      const trackRect = track.getBoundingClientRect();
+      if (e.target === this.thumb) return;
+      const trackRect = this.track.getBoundingClientRect();
       const clickPosition = (e.clientX - trackRect.left) / trackRect.width;
       const maxScroll = this.scrollContainer.scrollWidth - this.scrollContainer.clientWidth;
       this.scrollContainer.scrollTo({
@@ -178,27 +201,20 @@
       });
     }
 
+    setHeight(h) {
+      this.track.style.height = h;
+      this.thumb.style.height = h;
+    }
+
     initHoverEffect() {
-      const track = this.track || this.progressThumb.parentElement;
-      if (!track) return;
-
-      track.addEventListener('mouseenter', () => {
-        track.style.height = '6px';
+      this.track.addEventListener('mouseenter', () => this.setHeight('6px'));
+      this.track.addEventListener('mouseleave', () => {
+        if (!this.isDragging) this.setHeight('2px');
       });
-
-      track.addEventListener('mouseleave', () => {
-        if (!this.isDragging) {
-          track.style.height = '2px';
-        }
-      });
-
-      track.addEventListener('touchstart', () => {
-        track.style.height = '6px';
-      }, { passive: true });
-
-      track.addEventListener('touchend', () => {
+      this.track.addEventListener('touchstart', () => this.setHeight('6px'), { passive: true });
+      this.track.addEventListener('touchend', () => {
         setTimeout(() => {
-          track.style.height = '2px';
+          if (!this.isDragging) this.setHeight('2px');
         }, 300);
       });
     }
@@ -244,22 +260,36 @@
     const sections = document.querySelectorAll('.best-sellers-section');
     sections.forEach(section => {
       const sectionId = section.dataset.sectionId;
+      if (!sectionId) return;
+      if (section.dataset.initialized === 'true') return;
+      section.dataset.initialized = 'true';
+
       new ShowMoreToggle(sectionId);
       new ScrollProgressBar(sectionId);
       new ImageHoverSwap(section);
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBestSellersSection);
-  } else {
+  function safeInit() {
     initBestSellersSection();
+    setTimeout(initBestSellersSection, 100);
+    setTimeout(initBestSellersSection, 500);
   }
 
-  if (typeof Shopify !== 'undefined' && Shopify.designMode) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', safeInit);
+  } else {
+    safeInit();
+  }
+
+  window.addEventListener('load', initBestSellersSection);
+
+  if (typeof Shopify !== 'undefined') {
     document.addEventListener('shopify:section:load', (event) => {
-      if (event.target.classList.contains('section-best-sellers')) {
-        initBestSellersSection();
+      const section = event.target.querySelector('.best-sellers-section');
+      if (section) {
+        section.dataset.initialized = 'false';
+        setTimeout(initBestSellersSection, 100);
       }
     });
   }

@@ -50,13 +50,10 @@
           {%- endfor -%}
         </ul>
       </div>
-      <!-- Progress Bar / Scrollbar Track -->
-      <div class="tw-mt-8">
-        <div class="scrollbar-track tw-w-full tw-rounded-full tw-relative tw-overflow-hidden" id="scrollbar-track-{{ section.id }}">
-          <div 
-            class="scrollbar-thumb tw-absolute tw-left-0 tw-top-0 tw-rounded-full tw-cursor-pointer"
-            id="scrollbar-thumb-{{ section.id }}"
-          ></div>
+      <!-- Custom Scrollbar -->
+      <div style="margin-top: 32px;">
+        <div id="scrollbar-track-{{ section.id }}">
+          <div id="scrollbar-thumb-{{ section.id }}"></div>
         </div>
       </div>
     </div>
