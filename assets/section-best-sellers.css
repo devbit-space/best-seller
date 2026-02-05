@@ -36,6 +36,12 @@
   margin-bottom: 20px;
 }
 
+.seller-header-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
 @media (min-width: 768px) {
   .best-sellers-section .section-header {
     display: flex;
