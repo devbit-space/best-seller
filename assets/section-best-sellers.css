@@ -32,20 +32,33 @@
   color: transparent !important;
 }
 
+.best-sellers-section .section-header {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .best-sellers-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+}
+
 .best-sellers-section .section-heading {
   font-family: Georgia, 'Times New Roman', Times, serif;
-  font-size: 33px;
+  font-size: 30px;
   font-weight: 700;
   color: #1f2937;
   margin: 0;
   line-height: 1.2;
   text-align: center;
-  width: 100%;
 }
 
 @media (min-width: 768px) {
   .best-sellers-section .section-heading {
-    font-size: 40px;
+    font-size: 38px;
+    text-align: left;
   }
 }
 
@@ -58,6 +71,7 @@
   color: #374151;
   text-decoration: none;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .best-sellers-section .view-all-link:hover {

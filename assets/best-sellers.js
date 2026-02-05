@@ -94,27 +94,32 @@
 
     init() {
       this.scrollContainer.addEventListener('scroll', debounce(() => this.updateProgress(), 10));
-      this.updateProgress();
       this.initDrag();
       window.addEventListener('resize', debounce(() => this.updateProgress(), 100));
       this.initHoverEffect();
+      
+      this.updateProgress();
+      setTimeout(() => this.updateProgress(), 100);
+      window.addEventListener('load', () => this.updateProgress());
     }
 
     updateProgress() {
-      const { scrollLeft, scrollWidth, clientWidth } = this.scrollContainer;
+      const container = this.scrollContainer;
+      const scrollLeft = container.scrollLeft;
+      const scrollWidth = container.scrollWidth;
+      const clientWidth = container.clientWidth;
       const maxScroll = scrollWidth - clientWidth;
       
-      if (maxScroll <= 0) {
+      if (maxScroll <= 0 || scrollWidth === 0) {
         this.progressThumb.style.width = '100%';
         this.progressThumb.style.left = '0';
         return;
       }
 
-      const visibleRatio = clientWidth / scrollWidth;
-      const thumbWidth = Math.max(visibleRatio * 100, 10);
-      const scrollRatio = scrollLeft / maxScroll;
-      const maxThumbPosition = 100 - thumbWidth;
-      const thumbPosition = scrollRatio * maxThumbPosition;
+      const thumbWidthPercent = (clientWidth / scrollWidth) * 100;
+      const thumbWidth = Math.max(thumbWidthPercent, 5);
+      const scrollPercent = maxScroll > 0 ? scrollLeft / maxScroll : 0;
+      const thumbPosition = scrollPercent * (100 - thumbWidth);
 
       this.progressThumb.style.width = `${thumbWidth}%`;
       this.progressThumb.style.left = `${thumbPosition}%`;
