@@ -203,6 +203,7 @@
 
 @media (min-width: 768px) {
   .product-title {
+    font-size: 18px;
     margin-bottom: 10px;
   }
 }
