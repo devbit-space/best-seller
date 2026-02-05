@@ -122,6 +122,7 @@
       this.sectionId = sectionId;
       this.scrollContainer = document.getElementById(`desktop-scroll-${sectionId}`);
       this.progressThumb = document.getElementById(`scrollbar-thumb-${sectionId}`);
+      this.track = document.getElementById(`scrollbar-track-${sectionId}`);
       this.isDragging = false;
       this.startX = 0;
       this.scrollLeft = 0;
@@ -172,7 +173,7 @@
     }
 
     initDrag() {
-      const track = this.progressThumb.parentElement;
+      const track = this.track || this.progressThumb.parentElement;
 
       // Mouse events
       this.progressThumb.addEventListener('mousedown', (e) => this.startDrag(e));
@@ -185,7 +186,9 @@
       document.addEventListener('touchend', () => this.stopDrag());
 
       // Click on track to jump
-      track.addEventListener('click', (e) => this.jumpToPosition(e));
+      if (track) {
+        track.addEventListener('click', (e) => this.jumpToPosition(e));
+      }
     }
 
     startDrag(e) {
@@ -201,7 +204,7 @@
       if (!this.isDragging) return;
 
       const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      const track = this.progressThumb.parentElement;
+      const track = this.track || this.progressThumb.parentElement;
       const trackRect = track.getBoundingClientRect();
       const deltaX = clientX - this.startX;
       
@@ -221,7 +224,7 @@
     jumpToPosition(e) {
       if (e.target === this.progressThumb) return;
 
-      const track = this.progressThumb.parentElement;
+      const track = this.track || this.progressThumb.parentElement;
       const trackRect = track.getBoundingClientRect();
       const clickPosition = (e.clientX - trackRect.left) / trackRect.width;
       
@@ -233,31 +236,29 @@
     }
 
     initHoverEffect() {
-      const track = this.progressThumb.parentElement;
+      const track = this.track || this.progressThumb.parentElement;
       
+      if (!track) return;
+
       // Increase height on hover
       track.addEventListener('mouseenter', () => {
         track.style.height = '6px';
-        this.progressThumb.style.height = '6px';
       });
 
       track.addEventListener('mouseleave', () => {
         if (!this.isDragging) {
           track.style.height = '2px';
-          this.progressThumb.style.height = '100%';
         }
       });
 
       // Touch hover simulation
       track.addEventListener('touchstart', () => {
         track.style.height = '6px';
-        this.progressThumb.style.height = '6px';
       }, { passive: true });
 
       track.addEventListener('touchend', () => {
         setTimeout(() => {
           track.style.height = '2px';
-          this.progressThumb.style.height = '100%';
         }, 300);
       });
     }

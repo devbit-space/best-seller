@@ -15,7 +15,7 @@
 {%- endstyle -%}
 
 <!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com" defer></script>
+<script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     prefix: 'tw-',
@@ -29,7 +29,7 @@
   <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
     <!-- Header -->
     <header class="tw-flex tw-justify-between tw-items-center tw-mb-8">
-      <h2 class="tw-text-3xl md:tw-text-4xl tw-font-bold tw-italic tw-text-gray-900">
+      <h2 class="section-heading">
         {{ section.settings.heading }}
       </h2>
       {%- if section.settings.view_all_link != blank -%}
@@ -49,19 +49,19 @@
     <!-- Desktop: Horizontal Scrollable Grid with Custom Scrollbar -->
     <div class="tw-hidden md:tw-block">
       <div class="best-sellers-scroll-container tw-overflow-x-auto tw-pb-4" id="desktop-scroll-{{ section.id }}">
-        <ul class="tw-flex tw-gap-6 tw-min-w-max" role="list" aria-label="Best Sellers Products">
+        <ul class="product-list tw-flex tw-gap-6 tw-min-w-max tw-m-0 tw-p-0" role="list" aria-label="Best Sellers Products">
           {%- for block in section.blocks -%}
-            <li class="tw-w-[220px] tw-flex-shrink-0" {{ block.shopify_attributes }}>
+            <li class="product-item tw-w-[220px] tw-flex-shrink-0" {{ block.shopify_attributes }}>
               {% render 'best-seller-card', block: block, index: forloop.index %}
             </li>
           {%- endfor -%}
         </ul>
       </div>
       <!-- Progress Bar / Scrollbar Track -->
-      <div class="tw-mt-6 tw-flex tw-items-center tw-gap-4">
-        <div class="tw-flex-1 tw-h-[2px] tw-bg-gray-200 tw-rounded-full tw-relative tw-overflow-hidden">
+      <div class="tw-mt-8">
+        <div class="scrollbar-track tw-w-full tw-rounded-full tw-relative tw-overflow-hidden" id="scrollbar-track-{{ section.id }}">
           <div 
-            class="scrollbar-thumb tw-absolute tw-left-0 tw-top-0 tw-h-full tw-bg-gray-900 tw-rounded-full tw-transition-all tw-cursor-pointer"
+            class="scrollbar-thumb tw-absolute tw-left-0 tw-top-0 tw-rounded-full tw-cursor-pointer"
             id="scrollbar-thumb-{{ section.id }}"
             style="width: 30%;"
           ></div>
@@ -71,10 +71,10 @@
 
     <!-- Mobile: Grid with Show More -->
     <div class="md:tw-hidden">
-      <ul class="tw-grid tw-grid-cols-2 tw-gap-4" role="list" aria-label="Best Sellers Products">
+      <ul class="product-list tw-grid tw-grid-cols-2 tw-gap-4 tw-m-0 tw-p-0" role="list" aria-label="Best Sellers Products">
         {%- for block in section.blocks -%}
           <li 
-            class="{% if forloop.index > 4 %}best-seller-hidden tw-hidden{% endif %}" 
+            class="product-item {% if forloop.index > 4 %}best-seller-hidden tw-hidden{% endif %}" 
             data-product-index="{{ forloop.index }}"
             {{ block.shopify_attributes }}
           >

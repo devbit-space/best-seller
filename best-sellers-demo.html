@@ -29,55 +29,99 @@
       background-color: #fff;
       color: #1f2937;
     }
-    
+
     /* =========================================
-       Custom Scrollbar Styling
+       Remove List Markers
        ========================================= */
 
-    /* Desktop horizontal scroll container */
+    .best-sellers-section ul,
+    .best-sellers-section .product-list {
+      list-style: none !important;
+      list-style-type: none !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    .best-sellers-section li,
+    .best-sellers-section .product-item {
+      list-style: none !important;
+      list-style-type: none !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    .best-sellers-section li::before,
+    .best-sellers-section .product-item::before {
+      content: none !important;
+      display: none !important;
+    }
+
+    .best-sellers-section li::marker,
+    .best-sellers-section .product-item::marker {
+      content: none !important;
+      display: none !important;
+      font-size: 0 !important;
+      color: transparent !important;
+    }
+
+    /* =========================================
+       Section Heading - Serif Bold Italic
+       ========================================= */
+
+    .best-sellers-section .section-heading {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-size: 32px;
+      font-weight: 700;
+      font-style: italic;
+      color: #1f2937;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 768px) {
+      .best-sellers-section .section-heading {
+        font-size: 40px;
+      }
+    }
+    
+    /* =========================================
+       Hide Native Scrollbar - Use Custom Only
+       ========================================= */
+
     .best-sellers-scroll-container {
-      scrollbar-width: thin;
-      scrollbar-color: #1f2937 #e5e7eb;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
 
-    /* Webkit browsers (Chrome, Safari, Edge) */
     .best-sellers-scroll-container::-webkit-scrollbar {
-      height: 2px;
-      transition: height 0.2s ease;
-    }
-
-    .best-sellers-scroll-container::-webkit-scrollbar:hover {
-      height: 6px;
-    }
-
-    .best-sellers-scroll-container::-webkit-scrollbar-track {
-      background: #e5e7eb;
-      border-radius: 10px;
-    }
-
-    .best-sellers-scroll-container::-webkit-scrollbar-thumb {
-      background: #1f2937;
-      border-radius: 10px;
-      transition: all 0.2s ease;
-    }
-
-    .best-sellers-scroll-container::-webkit-scrollbar-thumb:hover {
-      background: #374151;
+      display: none;
+      height: 0;
+      width: 0;
     }
 
     /* =========================================
        Custom Progress Bar / Scrollbar Track
        ========================================= */
 
-    .scrollbar-thumb {
-      min-width: 50px;
-      transition: height 0.2s ease, background-color 0.2s ease;
-    }
-
     .scrollbar-track {
       height: 2px;
       transition: height 0.2s ease;
+      background-color: #e5e7eb;
+      position: relative;
+      border-radius: 10px;
+    }
+
+    .scrollbar-thumb {
+      min-width: 50px;
+      height: 100%;
+      transition: height 0.2s ease, background-color 0.2s ease;
+      background-color: #1f2937;
+      border-radius: 10px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      cursor: pointer;
     }
 
     .scrollbar-track:hover {
@@ -86,6 +130,116 @@
 
     .scrollbar-track:hover .scrollbar-thumb {
       height: 6px;
+    }
+
+    /* =========================================
+       Badge Styles - Match Design
+       ========================================= */
+
+    .best-seller-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background-color: #1a4d1a;
+      color: #ffffff;
+      border-radius: 3px;
+      line-height: 1;
+    }
+
+    .sale-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background-color: #1a4d1a;
+      color: #ffffff;
+      border-radius: 3px;
+      line-height: 1;
+    }
+
+    /* =========================================
+       Product Info Typography - Match Design
+       ========================================= */
+
+    .product-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1f2937;
+      line-height: 1.3;
+      margin: 0 0 6px 0;
+      text-decoration: none;
+    }
+
+    .product-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .product-title a:hover {
+      text-decoration: underline;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .product-rating .stars {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .product-rating .stars svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .product-rating .reviews-count {
+      font-size: 11px;
+      color: #6b7280;
+      margin-left: 2px;
+    }
+
+    .product-price {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f2937;
+      margin: 0;
+    }
+
+    /* =========================================
+       Product Card Styles
+       ========================================= */
+
+    .best-seller-card {
+      transition: transform 0.2s ease;
+    }
+
+    .best-seller-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .product-image-container {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .product-image-primary,
+    .product-image-hover {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     /* =========================================
@@ -114,7 +268,6 @@
       }
     }
 
-    /* Staggered animation for each card */
     .best-seller-visible[data-product-index="5"] { animation-delay: 0ms; }
     .best-seller-visible[data-product-index="6"] { animation-delay: 50ms; }
     .best-seller-visible[data-product-index="7"] { animation-delay: 100ms; }
@@ -122,7 +275,6 @@
     .best-seller-visible[data-product-index="9"] { animation-delay: 200ms; }
     .best-seller-visible[data-product-index="10"] { animation-delay: 250ms; }
 
-    /* Hide animation */
     .best-seller-hiding {
       animation: slideUp 0.3s ease forwards;
     }
@@ -155,39 +307,6 @@
     }
 
     /* =========================================
-       Product Card Styles
-       ========================================= */
-
-    .best-seller-card {
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .best-seller-card:hover {
-      transform: translateY(-2px);
-    }
-
-    /* Image hover effect */
-    .product-image-primary,
-    .product-image-hover {
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    /* =========================================
-       Responsive Adjustments
-       ========================================= */
-
-    @media (max-width: 375px) {
-      .best-seller-card .tw-text-xs {
-        font-size: 0.65rem;
-      }
-      
-      .best-seller-card .tw-text-sm {
-        font-size: 0.75rem;
-      }
-    }
-
-    /* =========================================
        Accessibility
        ========================================= */
 
@@ -211,9 +330,7 @@
     <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
       <!-- Header -->
       <header class="tw-flex tw-justify-between tw-items-center tw-mb-8">
-        <h2 class="tw-text-3xl md:tw-text-4xl tw-font-bold tw-italic tw-text-gray-900">
-          Best Sellers
-        </h2>
+        <h2 class="section-heading">Best Sellers</h2>
         <a 
           href="#" 
           class="tw-hidden md:tw-flex tw-items-center tw-gap-2 tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-text-gray-900 tw-transition-colors tw-group"
@@ -229,25 +346,21 @@
       <!-- Desktop: Horizontal Scrollable Grid with Custom Scrollbar -->
       <div class="tw-hidden md:tw-block">
         <div class="best-sellers-scroll-container tw-overflow-x-auto tw-pb-4" id="desktop-scroll-demo">
-          <ul class="tw-flex tw-gap-6 tw-min-w-max" role="list" aria-label="Best Sellers Products">
+          <ul class="product-list tw-flex tw-gap-6 tw-min-w-max" role="list" aria-label="Best Sellers Products" id="desktop-list">
             <!-- Product Cards will be inserted here by JavaScript -->
           </ul>
         </div>
         <!-- Progress Bar / Scrollbar Track -->
-        <div class="tw-mt-6 tw-flex tw-items-center tw-gap-4">
-          <div class="scrollbar-track tw-flex-1 tw-h-[2px] tw-bg-gray-200 tw-rounded-full tw-relative tw-overflow-hidden">
-            <div 
-              class="scrollbar-thumb tw-absolute tw-left-0 tw-top-0 tw-h-full tw-bg-gray-900 tw-rounded-full tw-transition-all tw-cursor-pointer"
-              id="scrollbar-thumb-demo"
-              style="width: 30%;"
-            ></div>
+        <div class="tw-mt-8">
+          <div class="scrollbar-track tw-w-full" id="scrollbar-track-demo">
+            <div class="scrollbar-thumb" id="scrollbar-thumb-demo" style="width: 30%;"></div>
           </div>
         </div>
       </div>
 
       <!-- Mobile: Grid with Show More -->
       <div class="md:tw-hidden">
-        <ul class="tw-grid tw-grid-cols-2 tw-gap-4" role="list" aria-label="Best Sellers Products" id="mobile-grid">
+        <ul class="product-list tw-grid tw-grid-cols-2 tw-gap-4" role="list" aria-label="Best Sellers Products" id="mobile-grid">
           <!-- Product Cards will be inserted here by JavaScript -->
         </ul>
 
@@ -386,11 +499,11 @@
       let stars = '';
       for (let i = 1; i <= 5; i++) {
         if (i <= rating) {
-          stars += `<svg class="tw-w-3 tw-h-3 tw-text-gray-900 tw-fill-current" viewBox="0 0 20 20">
+          stars += `<svg viewBox="0 0 20 20" fill="#1f2937">
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>`;
         } else {
-          stars += `<svg class="tw-w-3 tw-h-3 tw-text-gray-300 tw-fill-current" viewBox="0 0 20 20">
+          stars += `<svg viewBox="0 0 20 20" fill="#d1d5db">
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>`;
         }
@@ -403,23 +516,14 @@
       const hiddenClass = isMobile && index > 4 ? 'best-seller-hidden tw-hidden' : '';
       
       return `
-        <li class="${hiddenClass}" data-product-index="${index}" ${isMobile ? '' : 'class="tw-w-[220px] tw-flex-shrink-0"'}>
-          <article class="best-seller-card tw-group tw-relative tw-bg-white tw-rounded-lg tw-overflow-hidden">
+        <li class="product-item ${hiddenClass} ${isMobile ? '' : 'tw-w-[220px] tw-flex-shrink-0'}" data-product-index="${index}">
+          <article class="best-seller-card tw-group tw-relative tw-bg-white">
             <!-- Product Image Container -->
-            <a href="#" class="tw-block tw-relative tw-aspect-square tw-overflow-hidden tw-bg-gray-100">
+            <a href="#" class="product-image-container tw-block tw-relative tw-aspect-square tw-overflow-hidden tw-rounded-lg tw-bg-gray-100">
               <!-- Badges Container -->
-              <div class="tw-absolute tw-top-3 tw-left-3 tw-right-3 tw-flex tw-justify-between tw-items-start tw-z-10">
-                ${product.bestSeller ? `
-                  <span class="tw-inline-flex tw-items-center tw-px-2 tw-py-1 tw-text-[10px] tw-font-bold tw-uppercase tw-tracking-wider tw-bg-[#2d5a27] tw-text-white tw-rounded">
-                    Best Seller
-                  </span>
-                ` : '<span></span>'}
-                
-                ${product.sale ? `
-                  <span class="tw-inline-flex tw-items-center tw-px-2 tw-py-1 tw-text-[10px] tw-font-bold tw-uppercase tw-tracking-wider tw-bg-[#2d5a27] tw-text-white tw-rounded">
-                    ${product.saleText}
-                  </span>
-                ` : ''}
+              <div class="tw-absolute tw-top-2 tw-left-2 tw-right-2 tw-flex tw-justify-between tw-items-start tw-z-10">
+                ${product.bestSeller ? `<span class="best-seller-badge">BEST SELLER</span>` : '<span></span>'}
+                ${product.sale ? `<span class="sale-badge">${product.saleText}</span>` : ''}
               </div>
               
               <!-- Primary Image -->
@@ -440,24 +544,20 @@
             </a>
             
             <!-- Product Info -->
-            <div class="tw-p-3 tw-pt-4">
+            <div class="tw-pt-4 tw-pb-2">
               <!-- Product Title -->
-              <h3 class="tw-text-xs tw-font-bold tw-uppercase tw-tracking-wide tw-text-gray-900 tw-mb-2 tw-line-clamp-2 tw-leading-tight">
-                <a href="#" class="hover:tw-text-gray-600 tw-transition-colors">
-                  ${product.title}
-                </a>
+              <h3 class="product-title">
+                <a href="#">${product.title}</a>
               </h3>
               
               <!-- Star Rating & Reviews -->
-              <div class="tw-flex tw-items-center tw-gap-1 tw-mb-2">
-                <div class="tw-flex tw-items-center">
-                  ${generateStars(product.rating)}
-                </div>
-                <span class="tw-text-[10px] tw-text-gray-500">${product.reviews}</span>
+              <div class="product-rating">
+                <div class="stars">${generateStars(product.rating)}</div>
+                <span class="reviews-count">${product.reviews}</span>
               </div>
               
               <!-- Price -->
-              <p class="tw-text-sm tw-font-semibold tw-text-gray-900">${product.price}</p>
+              <p class="product-price">${product.price}</p>
             </div>
           </article>
         </li>
@@ -467,9 +567,9 @@
     // Render products
     function renderProducts() {
       // Desktop grid
-      const desktopContainer = document.querySelector('#desktop-scroll-demo ul');
+      const desktopContainer = document.getElementById('desktop-list');
       desktopContainer.innerHTML = products.map((product, index) => 
-        `<li class="tw-w-[220px] tw-flex-shrink-0">${generateProductCard(product, index + 1, false).replace('<li', '<div').replace('</li>', '</div>')}</li>`
+        generateProductCard(product, index + 1, false)
       ).join('');
 
       // Mobile grid
@@ -502,8 +602,6 @@
       }
 
       updateHiddenItems() {
-        this.hiddenItems = this.section.querySelectorAll('.best-seller-hidden, .best-seller-visible[data-product-index]');
-        // Filter to only items with index > 4
         this.hiddenItems = Array.from(this.section.querySelectorAll('[data-product-index]')).filter(item => {
           const index = parseInt(item.getAttribute('data-product-index'));
           return index > 4;
@@ -572,6 +670,7 @@
         this.sectionId = sectionId;
         this.scrollContainer = document.getElementById(`desktop-scroll-${sectionId}`);
         this.progressThumb = document.getElementById(`scrollbar-thumb-${sectionId}`);
+        this.track = document.getElementById(`scrollbar-track-${sectionId}`);
         this.isDragging = false;
         this.startX = 0;
         this.scrollLeft = 0;
@@ -611,8 +710,6 @@
       }
 
       initDrag() {
-        const track = this.progressThumb.parentElement;
-
         this.progressThumb.addEventListener('mousedown', (e) => this.startDrag(e));
         document.addEventListener('mousemove', (e) => this.drag(e));
         document.addEventListener('mouseup', () => this.stopDrag());
@@ -621,7 +718,9 @@
         document.addEventListener('touchmove', (e) => this.drag(e), { passive: true });
         document.addEventListener('touchend', () => this.stopDrag());
 
-        track.addEventListener('click', (e) => this.jumpToPosition(e));
+        if (this.track) {
+          this.track.addEventListener('click', (e) => this.jumpToPosition(e));
+        }
       }
 
       startDrag(e) {
@@ -637,8 +736,7 @@
         if (!this.isDragging) return;
 
         const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        const track = this.progressThumb.parentElement;
-        const trackRect = track.getBoundingClientRect();
+        const trackRect = this.track.getBoundingClientRect();
         const deltaX = clientX - this.startX;
         
         const trackWidth = trackRect.width;
@@ -656,8 +754,7 @@
       jumpToPosition(e) {
         if (e.target === this.progressThumb) return;
 
-        const track = this.progressThumb.parentElement;
-        const trackRect = track.getBoundingClientRect();
+        const trackRect = this.track.getBoundingClientRect();
         const clickPosition = (e.clientX - trackRect.left) / trackRect.width;
         
         const maxScroll = this.scrollContainer.scrollWidth - this.scrollContainer.clientWidth;
@@ -668,29 +765,25 @@
       }
 
       initHoverEffect() {
-        const track = this.progressThumb.parentElement;
+        if (!this.track) return;
         
-        track.addEventListener('mouseenter', () => {
-          track.style.height = '6px';
-          this.progressThumb.style.height = '6px';
+        this.track.addEventListener('mouseenter', () => {
+          this.track.style.height = '6px';
         });
 
-        track.addEventListener('mouseleave', () => {
+        this.track.addEventListener('mouseleave', () => {
           if (!this.isDragging) {
-            track.style.height = '2px';
-            this.progressThumb.style.height = '100%';
+            this.track.style.height = '2px';
           }
         });
 
-        track.addEventListener('touchstart', () => {
-          track.style.height = '6px';
-          this.progressThumb.style.height = '6px';
+        this.track.addEventListener('touchstart', () => {
+          this.track.style.height = '6px';
         }, { passive: true });
 
-        track.addEventListener('touchend', () => {
+        this.track.addEventListener('touchend', () => {
           setTimeout(() => {
-            track.style.height = '2px';
-            this.progressThumb.style.height = '100%';
+            this.track.style.height = '2px';
           }, 300);
         });
       }
