@@ -125,7 +125,7 @@ function generateStars(rating) {
 
 function generateProductCard(product, index, isMobile = false) {
   const hiddenClass = isMobile && index > 4 ? 'best-seller-hidden tw-hidden' : '';
-  const widthClass = isMobile ? '' : 'tw-w-[220px] tw-flex-shrink-0';
+  const widthClass = isMobile ? '' : 'tw-w-[355px] tw-flex-shrink-0';
   
   return `
     <li class="product-item ${hiddenClass} ${widthClass}" data-product-index="${index}">
@@ -138,7 +138,7 @@ function generateProductCard(product, index, isMobile = false) {
           <img src="${product.image}" alt="${product.title}" loading="lazy" class="product-image-primary tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-cover tw-transition-opacity tw-duration-300 group-hover:tw-opacity-0">
           <img src="${product.imageHover}" alt="${product.title} - alternate view" loading="lazy" class="product-image-hover tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-cover tw-opacity-0 tw-transition-opacity tw-duration-300 group-hover:tw-opacity-100">
         </a>
-        <div class="tw-pt-4 tw-pb-2">
+        <div class="tw-pt-4 tw-pb-2 tw-px-2 md:tw-px-3">
           <h3 class="product-title"><a href="#">${product.title}</a></h3>
           <div class="product-rating">
             <div class="stars star-rating-flexible" role="img" aria-label="${product.rating} out of 5 stars">${generateStars(product.rating)}</div>
