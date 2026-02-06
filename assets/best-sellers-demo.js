@@ -3,7 +3,7 @@ const products = [
     title: "Outside Vibes T-Shirt Sunshine",
     price: "$104.95",
     reviews: "1,234 Reviews",
-    rating: 4,
+    rating: 4.3,
     bestSeller: true,
     sale: false,
     saleText: "",
@@ -114,9 +114,13 @@ const products = [
 const starPath = "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z";
 
 function generateStars(rating) {
-  return Array.from({ length: 5 }, (_, i) => 
-    `<svg viewBox="0 0 20 20" fill="${i < rating ? '#1f2937' : '#d1d5db'}"><path d="${starPath}"/></svg>`
-  ).join('');
+  const r = Math.min(5, Math.max(0, Number(rating) || 0));
+  return Array.from({ length: 5 }, (_, i) => {
+    const starIndex = i + 1;
+    let remainder = r - starIndex + 1;
+    let fillPct = remainder >= 1 ? 100 : remainder <= 0 ? 0 : Math.round(remainder * 100);
+    return `<span class="star-wrap" aria-hidden="true"><span class="star-bg"><svg viewBox="0 0 20 20" fill="currentColor"><path d="${starPath}"/></svg></span><span class="star-fill" style="--star-fill: ${fillPct}%;"><svg viewBox="0 0 20 20" fill="currentColor"><path d="${starPath}"/></svg></span></span>`;
+  }).join('');
 }
 
 function generateProductCard(product, index, isMobile = false) {
@@ -137,7 +141,7 @@ function generateProductCard(product, index, isMobile = false) {
         <div class="tw-pt-4 tw-pb-2">
           <h3 class="product-title"><a href="#">${product.title}</a></h3>
           <div class="product-rating">
-            <div class="stars">${generateStars(product.rating)}</div>
+            <div class="stars star-rating-flexible" role="img" aria-label="${product.rating} out of 5 stars">${generateStars(product.rating)}</div>
             <span class="reviews-count">${product.reviews}</span>
           </div>
           <p class="product-price">${product.price}</p>
